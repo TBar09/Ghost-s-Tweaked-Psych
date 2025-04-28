@@ -14,7 +14,6 @@ class Global {
     public static function init() {
         fnfVersion = Application.current.meta.get('version');
         engineVersion = '0.7.3';
-        modVersion = '0.0.0';
         forkVersion = '0.0.1';
         forkStage = 'alpha';
 

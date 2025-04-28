@@ -18,7 +18,7 @@ import openfl.display.BitmapData;
 import shaders.ColorSwap;
 
 import states.StoryMenuState;
-import states.OutdatedState;
+import states.WarningState;
 import states.MainMenuState;
 
 typedef TitleData =
@@ -63,6 +63,10 @@ class TitleState extends MusicBeatState
 	#end
 
 	public static var mustUpdate:Bool = false;
+	public static var leftState:Map<String, Bool> = [
+		'flashing' => false,
+		'outdated' => false
+	];
 
 	var titleJSON:TitleData;
 
@@ -130,10 +134,23 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
+		if(FlxG.save.data.flashing == null && !leftState['flashing']) {
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
-			MusicBeatState.switchState(new FlashingState());
+			MusicBeatState.switchState(new WarningState('WARNING',
+				'Hey! Be warned, <!>flashing lights<!> are present in this mod\n' +
+				'If you are sensitive, it\'s recommended to turn it off.\n\n' + 
+				'Press <*>ACCEPT<*> to <?>turn <!>off<!> flashing lights<?>\n'+
+				'Press <!>BACK<!> to <?>ignore<?> and continue.',
+				{
+					enter: () -> {
+						MusicBeatState.switchState(new TitleState());
+						ClientPrefs.data.flashing = false;
+					},
+					back: () -> MusicBeatState.switchState(new TitleState()),
+					both: () -> leftState['flashing'] = true
+				}
+			));
 		} else {
 			if (initialized)
 				startIntro();
@@ -387,11 +404,25 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					if (mustUpdate) {
-						MusicBeatState.switchState(new OutdatedState());
+					if (mustUpdate && !leftState['outdated']) {
+						MusicBeatState.switchState(new WarningState('WARNING',
+							'Hey! Thank you for choosing Ghost\'s Tweaked Psych.\n'+
+							'You are currently using an <!>outdated version<!> of this <?>fork<?>.\n\n' +
+							'Press <*>ACCEPT<*> to go to the github releases\n' +
+							'Press <!>BACK<!> to ignore this warning.',
+							{ 
+								enter: () -> {
+									trace('TODO: Redirect to the Github Release');
+									MusicBeatState.switchState(new MainMenuState());
+								},
+								back: () -> MusicBeatState.switchState(new MainMenuState()),
+								both: () -> leftState['outdated'] = true
+							}
+						));
 					} else {
 						MusicBeatState.switchState(new MainMenuState());
 					}
+
 					closedState = true;
 				});
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
