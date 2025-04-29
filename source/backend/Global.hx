@@ -17,28 +17,26 @@ class Global {
         forkVersion = '0.0.1';
         forkStage = 'alpha';
 
-        var toPrint:String = 'Application Meta: {';
-        for (key => field in Application.current.meta) {
-            toPrint += '\n    $key: $field';
-        }
-        trace(toPrint + '\n}');
-
-        var http = new haxe.Http("https://raw.githubusercontent.com/GhostglowDev/Ghost-s-Tweaked-Psych/main/forkVersion.txt");
+        var http = new haxe.Http("https://raw.githubusercontent.com/AlsoGhostglowDev/Ghost-s-Tweaked-Psych/main/forkVersion.txt");
         http.onData = function(data:String)
         {
             forkLatestVersion = data.split('\n')[0].trim();
             trace('Latest Version: ' + forkLatestVersion + ', Current Version: ' + forkVersion);
             if(forkLatestVersion != forkVersion) {
-                trace('Versions does not match.');
+                trace('Current version is outdated.');
                 states.TitleState.mustUpdate = true;
             }
         }
-
         http.onError = function (error) {
-            trace('ERROR: $error');
+            trace('HTTP: $error');
         }
-
         http.request();
+
+        var toPrint:String = 'Application Meta: {';
+        for (key => field in Application.current.meta) {
+            toPrint += '\n    $key: $field';
+        }
+        trace(toPrint + '\n}');
     }
 
     static function get_modVersion():String {

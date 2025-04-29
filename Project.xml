@@ -3,7 +3,7 @@
 	<!-- _________________________ Application Settings _________________________ -->
 
 	<app 
-		title="Friday Night Funkin': Ghost's Tweaked Psych" file="GTPsych" 
+		title="Funkin': Ghost's Tweaked Psych" file="GTPsych" 
 		packageName="com.ghostglowdev.tweakedpsych" package="com.ghostglowdev.tweakedpsych" 
 		main="Main" version="0.2.8" company="GhostglowDev" 
 	/>
@@ -30,6 +30,7 @@
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="DISCORD_ALLOWED" />
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
+	<define name="PRETTY_TRACE" />
 
 	<section if="officialBuild">
 		<define name="TITLE_SCREEN_EASTER_EGG"/>
@@ -97,6 +98,7 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="tjson" />
+	<haxelib name="hxWindowColorMode"/> <!-- remove if you don't want dark mode -->
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>

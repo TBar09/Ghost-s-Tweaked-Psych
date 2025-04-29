@@ -55,8 +55,14 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
+		backend.Log.init();
 		Global.init();
 		Lib.current.addChild(new Main());
+
+		#if hxWindowColorMode 
+		hxwindowmode.WindowColorMode.setDarkMode(); 
+		hxwindowmode.WindowColorMode.redrawWindowHeader();
+		#end
 	}
 
 	public function new()
@@ -88,7 +94,6 @@ class Main extends Sprite
 		}
 
 		setupGame();
-		trace(Global.modVersion);
 	}
 
 	private function setupGame():Void

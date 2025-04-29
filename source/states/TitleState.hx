@@ -407,7 +407,8 @@ class TitleState extends MusicBeatState
 					if (mustUpdate && !leftState['outdated']) {
 						MusicBeatState.switchState(new WarningState('WARNING',
 							'Hey! Thank you for choosing Ghost\'s Tweaked Psych.\n'+
-							'You are currently using an <!>outdated version<!> of this <?>fork<?>.\n\n' +
+							'You are currently using an <!>outdated version<!> (<?>$forkVersion<?>) of this <?>fork<?>.\n\n' +
+							'Consider updating to the latest version (<*>$forkLatestVersion<*>)\nfor more added <*>features<*> and <*>tweaks/fixes<*>\n\n' +
 							'Press <*>ACCEPT<*> to go to the github releases\n' +
 							'Press <!>BACK<!> to ignore this warning.',
 							{ 

@@ -22,6 +22,7 @@ import js.html.*;
 #end
 
 import Reflect;
+import Std.*;
 
 import backend.Paths;
 import backend.Controls;
@@ -34,6 +35,10 @@ import backend.Conductor;
 import backend.BaseStage;
 import backend.Difficulty;
 import backend.Mods;
+import backend.Log;
+import backend.Log.error;
+import backend.Log.warn;
+import backend.Log.info;
 
 import backend.Global.*;
 

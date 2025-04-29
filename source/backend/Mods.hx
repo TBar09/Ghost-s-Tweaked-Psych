@@ -142,7 +142,7 @@ class Mods
 			}
 		}
 
-		if (Reflect.hasField(ret, 'version')) Reflect.setField(ret, 'version', '0.0.0');
+		if (!Reflect.hasField(ret, 'version')) Reflect.setField(ret, 'version', '0.0.0');
 		#end
 		return ret;
 	}
