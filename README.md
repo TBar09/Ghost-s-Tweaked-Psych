@@ -13,3 +13,4 @@ There is currently only a few features, but I'm planning for quite a few to go i
 
 ## Contributors:
 - [GhostglowDev](https://github.com/AlsoGhostglowDev) <sub>(me)</sub>  -  Programming
+- [SwagaRuney](https://github.com/SwagaRuney) - Art (Main Menu's arrow)
