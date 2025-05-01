@@ -4,7 +4,6 @@ import flixel.FlxObject;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import lime.app.Application;
-import states.editors.MasterEditorMenu;
 import options.OptionsState;
 import objects.CinematicBars;
 import flixel.util.FlxSignal.FlxTypedSignal;
@@ -12,6 +11,7 @@ import flixel.util.FlxSignal.FlxTypedSignal;
 class MainMenuState extends SelectableMenu {
     var menuItems:FlxTypedGroup<FlxSprite>;
     var buttonItems:FlxTypedGroup<FlxSprite>;
+    var arrowButtons:FlxTypedGroup<FlxSprite>;
     var cinematicBars:CinematicBars;
 
     var curSelectedItem:FlxSprite;
@@ -19,13 +19,13 @@ class MainMenuState extends SelectableMenu {
     
     var buttonRedirect:Map<String, Void->Void> = [];
 
-	override public function new() {
+	public function new() {
         super(new KeyValueArray<Void->Void>(['story_mode', 'freeplay', 'credits', 'donate'], [
             () -> transition(menuItems.members[0], () -> MusicBeatState.switchState(new StoryMenuState())),
             () -> transition(menuItems.members[1], () -> MusicBeatState.switchState(new FreeplayState())),
             () -> transition(menuItems.members[2], () -> MusicBeatState.switchState(new CreditsState())),
             () -> trace('Donate Button'),
-        ]), 'menuBG');
+        ]), Paths.image('menuBG'));
         buttonRedirect = [
             "options"      => () -> transition(buttonItems.members[0], () -> MusicBeatState.switchState(new OptionsState())),
             "achievements" => () -> transition(buttonItems.members[1], () -> MusicBeatState.switchState(new AchievementsMenuState()))
@@ -47,6 +47,7 @@ class MainMenuState extends SelectableMenu {
                 item.centerOffsets();
             }
         });
+        onExit.add( () -> MusicBeatState.switchState(new TitleState()));
 
         @:privateAccess {
             _bg.scale.set(1.25, 1.25);
@@ -63,6 +64,9 @@ class MainMenuState extends SelectableMenu {
 
         buttonItems = new FlxTypedGroup<FlxSprite>();
         add(buttonItems);
+
+        arrowButtons = new FlxTypedGroup<FlxSprite>();
+        add(arrowButtons);
 
         FlxG.mouse.visible = true;
     }
@@ -86,8 +90,19 @@ class MainMenuState extends SelectableMenu {
         curSelectedItem = menuItems.members[0];
         onItemChanged.dispatch();
 
+        for (i in 0...2) {
+            var arrow = new FlxSprite(i == 0 ? 40 : FlxG.width - (209 * 0.4) - 40);
+            arrow.loadGraphic(Paths.image('mainmenu/menu_arrow'), true, 209, 358);
+            arrow.animation.add('idle', [0, 1, 2], 12, true);
+            arrow.animation.play('idle');
+            arrow.scale.set(0.4, 0.4); arrow.updateHitbox();
+            arrow.screenCenter(Y);
+            arrow.flipX = i == 0;
+            arrowButtons.add(arrow);
+        }
+
         for (i => button in ['options', 'achievements']) {
-            var buttonItem = new MenuButton(FlxG.width - (200 * (i+1)), FlxG.height - 175, button);
+            var buttonItem = new MenuButton(FlxG.width - (150 * (i+1)), FlxG.height - 150, button);
             buttonItem.onClick.add(buttonRedirect.get(button));
             buttonItems.add(buttonItem);
         }
@@ -112,9 +127,21 @@ class MainMenuState extends SelectableMenu {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
+        if (FlxG.keys.justPressed.SEVEN) openSubState(new substates.EditorSelectionSubState());
+
         for (i => item in menuItems) {
             item.x = FlxMath.lerp(item.x, (FlxG.width - item.width) / 2 + ((FlxG.width / 2) * (i - curSelected[0])), 0.2);
             item.scale.x = item.scale.y = FlxMath.lerp(item.scale.x, i == curSelected[0] ? 1 : 0.8, 0.2);
+        }
+
+        if (FlxG.mouse.overlaps(curSelectedItem) && FlxG.mouse.justPressed) options.get(optionOrder[curSelected[0]])();
+
+        for (i => arrow in arrowButtons) {
+            arrow.setColorTransform(1, 1, 1, 1, 0, 0, 0, 0);
+            if (FlxG.mouse.overlaps(arrow)) {
+                arrow.setColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
+                if (FlxG.mouse.justPressed) changeItem(i == 0 ? -1 : 1);
+            }
         }
 
         @:privateAccess
@@ -136,10 +163,11 @@ class MainMenuState extends SelectableMenu {
                     "scale.x": 1.5,
                     "scale.y": 1.5
                 }, .6, {ease: FlxEase.expoOut});
+                for (item in menuItems) FlxTween.tween(item, {alpha: 0.15}, .6, {ease: FlxEase.expoOut});
             }
 
             new flixel.util.FlxTimer().start(0.8, (_) -> {
-                FlxTween.tween(FlxG.camera, {zoom: 3, angle: 20}, .5, {ease: FlxEase.smootherStepIn});
+                FlxTween.tween(FlxG.camera, {zoom: 3}, .5, {ease: FlxEase.smootherStepIn});
             });
             FlxFlicker.flicker(item, 1, 0.06, false, false, (_) -> func());
         }
@@ -158,7 +186,7 @@ private class MenuButton extends FlxSprite {
 		animation.addByPrefix('selected', graphic + " selected", 24, false);
         animation.play('idle');
         scrollFactor.set();
-        scale.set(0.85, 0.85);
+        scale.set(0.7, 0.7);
         updateHitbox();
 
         onClick = new FlxTypedSignal<Void->Void>();
@@ -174,12 +202,12 @@ private class MenuButton extends FlxSprite {
                 animation.play('selected', false);
 
                 FlxG.sound.play(Paths.sound('scrollMenu'));
-                centerOffsets();
+                centerOrigin(); centerOffsets();
             }
         } else if (!FlxG.mouse.overlaps(this) && _wasHovered) { 
             _wasHovered = false;
             animation.play('idle', false);
-            centerOffsets();
+            centerOrigin(); centerOffsets();
         }
     }
 } 

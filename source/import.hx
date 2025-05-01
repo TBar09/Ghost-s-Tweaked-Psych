@@ -23,6 +23,7 @@ import js.html.*;
 
 import Reflect;
 import Std.*;
+import Types.KeyValueArray;
 
 import backend.Paths;
 import backend.Controls;

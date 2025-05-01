@@ -3,12 +3,13 @@ package backend;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 
-// made to be extended
-class SelectableMenu extends MusicBeatState {
+// made to be extended - this is basically the same thing as SelectableMenu :sob:
+class SelectableSubState extends MusicBeatSubstate {
     var _bg:FlxSprite;
     public var curSelected:Array<Int> = [0, 0];
     public var scrollMult:Array<Float> = [0, 0];
     public var allowWrapping:Bool = true;
+    public var allowEnter:Bool = true;
     public var canLeave:Bool = true;
     public var lead:Int = 0;
 
@@ -40,10 +41,7 @@ class SelectableMenu extends MusicBeatState {
     override function update(elapsed:Float) {
         super.update(elapsed);
         
-        if (controls.ACCEPT) {
-            onEnterPressed.dispatch();
-            options.get(optionOrder[curSelected[lead]])();
-        }
+        if (controls.ACCEPT && allowEnter) __enter();
 
         if (controls.UI_UP_P || controls.UI_DOWN_P || controls.UI_LEFT_P || controls.UI_RIGHT_P) {
             final i = (controls.UI_UP_P || controls.UI_DOWN_P) ? 1 : 0;
@@ -67,7 +65,12 @@ class SelectableMenu extends MusicBeatState {
             if (curSelected[index] < 0) curSelected[index] = optionOrder.length-1;
         else
             curSelected[index] = FlxMath.wrap(curSelected[index], 0, optionOrder.length-1);
-
+        
         onItemChanged.dispatch();
+    }
+
+    private function __enter() {
+        onEnterPressed.dispatch();
+        options.get(optionOrder[curSelected[lead]])();
     }
 }
