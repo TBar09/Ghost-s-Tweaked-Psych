@@ -11,7 +11,7 @@ class Global {
     public static var forkLatestVersion(default, null):String;
     public static var forkStage(default, null):String;
 
-    public static function init() {
+    public static function initz() {
         fnfVersion = Application.current.meta.get('version');
         engineVersion = '0.7.3';
         forkVersion = '0.0.1';

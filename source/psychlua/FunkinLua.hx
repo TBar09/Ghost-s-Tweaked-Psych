@@ -32,8 +32,9 @@ import substates.GameOverSubstate;
 
 import psychlua.LuaUtils;
 import psychlua.LuaUtils.LuaTweenOptions;
-#if SScript
+#if HSCRIPT_ALLOWED
 import psychlua.HScript;
+import psychlua.HScript.HaxeCode;
 #end
 import psychlua.DebugLuaText;
 import psychlua.ModchartSprite;
@@ -42,6 +43,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;
 
 import haxe.Json;
+import backend.Global;
 
 class FunkinLua {
 	public var lua:State = null;
@@ -51,7 +53,7 @@ class FunkinLua {
 	public var closed:Bool = false;
 
 	#if HSCRIPT_ALLOWED
-	public var hscript:HScript = null;
+	public var hscript:HaxeCode = null;
 	#end
 
 	public var callbacks:Map<String, Dynamic> = new Map<String, Dynamic>();
@@ -74,6 +76,10 @@ class FunkinLua {
 		#if MODS_ALLOWED
 		if(myFolder[0] + '/' == Paths.mods() && (Mods.currentModDirectory == myFolder[1] || Mods.getGlobalMods().contains(myFolder[1]))) //is inside mods folder
 			this.modFolder = myFolder[1];
+		#end
+		
+		#if HSCRIPT_ALLOWED
+		this.initHaxeModule();
 		#end
 
 		// Lua shit
@@ -131,7 +137,7 @@ class FunkinLua {
 		set('rating', 0);
 		set('ratingName', '');
 		set('ratingFC', '');
-		set('version', engineVersion.trim());
+		set('version', Global.engineVersion.trim());
 
 		set('inGameOver', false);
 		set('mustHitSection', false);
@@ -395,7 +401,7 @@ class FunkinLua {
 			{
 				if(!ignoreAlreadyRunning)
 					for (script in game.hscriptArray)
-						if(script.origin == foundScript)
+						if(script.scriptName == foundScript)
 						{
 							luaTrace('addHScript: The script "' + foundScript + '" is already running!');
 							return;
@@ -432,10 +438,10 @@ class FunkinLua {
 			{
 				if(!ignoreAlreadyRunning)
 					for (script in game.hscriptArray)	
-						if(script.origin == foundScript)
+						if(script.scriptName == foundScript)
 						{
-							trace('Closing script ' + (script.origin != null ? script.origin : luaFile));
-							script.destroy();
+							trace('Closing script ' + (script.scriptName != null ? script.scriptName : luaFile));
+							script.stop();
 							return true;
 						}
 			}
@@ -1500,7 +1506,7 @@ class FunkinLua {
 		});
 
 		#if DISCORD_ALLOWED DiscordClient.addLuaCallbacks(lua); #end
-		#if HSCRIPT_ALLOWED HScript.implement(this); #end
+		#if HSCRIPT_ALLOWED HaxeCode.implement(this); #end
 		#if ACHIEVEMENTS_ALLOWED Achievements.addLuaCallbacks(lua); #end
 		#if flxanimate FlxAnimateFunctions.implement(this); #end
 		ReflectionFunctions.implement(this);
@@ -1603,8 +1609,7 @@ class FunkinLua {
 		Lua.close(lua);
 		lua = null;
 		#if HSCRIPT_ALLOWED
-		if(hscript != null)
-		{
+		if(hscript != null) {
 			hscript.destroy();
 			hscript = null;
 		}
@@ -1631,7 +1636,8 @@ class FunkinLua {
 			if(deprecated && !getBool('luaDeprecatedWarnings')) {
 				return;
 			}
-			PlayState.instance.addTextToDebug(text, color);
+			if(FlxG.state is PlayState) PlayState.instance.addTextToDebug(text, color);
+			trace(text);
 		}
 	}
 
@@ -1690,6 +1696,14 @@ class FunkinLua {
 		return v;
 		return null;
 	}
+	
+	#if HSCRIPT_ALLOWED
+	public function initHaxeModule() {
+		if(this != null) {
+			this.hscript = new HaxeCode(this);
+		}
+	}
+	#end
 
 	public function addLocalCallback(name:String, myFunction:Dynamic)
 	{

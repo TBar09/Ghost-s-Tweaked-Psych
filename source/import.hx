@@ -36,12 +36,20 @@ import backend.Conductor;
 import backend.BaseStage;
 import backend.Difficulty;
 import backend.Mods;
+
+#if PRETTY_TRACE
 import backend.Log;
 import backend.Log.error;
 import backend.Log.warn;
 import backend.Log.info;
+#else
+import haxe.Log;
+import haxe.Log.trace as error;
+import haxe.Log.trace as warn;
+import haxe.Log.trace as info;
+#end
 
-import backend.Global.*;
+//import backend.Global.*;
 
 import objects.Alphabet;
 import objects.BGSprite;
