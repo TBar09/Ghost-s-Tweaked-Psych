@@ -9,6 +9,7 @@ import sys.io.FileOutput;
 
 using StringTools;
 
+#if PRETTY_TRACE
 class Log
 {
     // Taken from Cobalt's Horizon Engine; THANK YOU COBALT!!
@@ -22,7 +23,7 @@ class Log
 
 	private static var log:Array<String> = [];
 
-	public static function init():Void
+	public static function initz():Void
 	{
 		ogTrace = haxe.Log.trace;
 		#if PRETTY_TRACE haxe.Log.trace = hxTrace; #end
@@ -69,3 +70,4 @@ class Log
 		return format = val;
 	}
 }
+#end

@@ -32,9 +32,7 @@ import haxe.io.Path;
 
 #if linux
 @:cppInclude('./external/gamemode_client.h')
-@:cppFileCode('
-	#define GAMEMODE_AUTO
-')
+@:cppFileCode('#define GAMEMODE_AUTO')
 #end
 
 class Main extends Sprite
@@ -55,8 +53,6 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
-		backend.Log.init();
-		Global.init();
 		Lib.current.addChild(new Main());
 
 		#if hxWindowColorMode 

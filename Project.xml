@@ -30,7 +30,9 @@
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="DISCORD_ALLOWED" />
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
-	<define name="PRETTY_TRACE" />
+	
+	<!-- <define name="PRETTY_TRACE" /> -->
+	<define name="CUSTOM_CLASSES" /> <!-- Allows for custom classes using HScript. Increases loading times though-->
 
 	<section if="officialBuild">
 		<define name="TITLE_SCREEN_EASTER_EGG"/>
@@ -93,19 +95,20 @@
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 
 	<!-- _______________________________ Libraries ______________________________ -->
-
-	<haxelib name="flixel" />
-	<haxelib name="flixel-ui" />
-	<haxelib name="flixel-addons" />
+	<haxelib name="flixel" version="5.6.2"/>
+	<haxelib name="flixel-ui" version="2.5.0"/>
+	<haxelib name="flixel-addons" version="3.2.2"/>
 	<haxelib name="tjson" />
 	<haxelib name="hxWindowColorMode"/> <!-- remove if you don't want dark mode -->
 
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
-	<haxelib name="SScript" if="HSCRIPT_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 	<haxelib name="flxanimate"/>
+	
+	<haxelib name="hscript-improved" if="HSCRIPT_ALLOWED"/>
+	<define name="hscriptPos" />
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
@@ -159,6 +162,7 @@
 	<haxedef name='no-deprecation-warnings' />
 
 	<!--Macro fixes-->
+	<haxeflag name="--macro" value="backend.Macro.compileMacros()" />
 	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<haxeflag name="--macro" value="include('my.pack')" />
 
