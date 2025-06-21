@@ -7,7 +7,6 @@ import lime.app.Application;
 import options.OptionsState;
 import objects.CinematicBars;
 import flixel.util.FlxSignal.FlxTypedSignal;
-import backend.Global;
 
 class MainMenuState extends SelectableMenu {
     var menuItems:FlxTypedGroup<FlxSprite>;

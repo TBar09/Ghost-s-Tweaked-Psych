@@ -136,6 +136,11 @@ class Main extends Sprite
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
 
+		#if PRETTY_TRACE 
+		backend.Log.init();
+		#end
+		Global.init();
+
 		#if DISCORD_ALLOWED
 		DiscordClient.prepare();
 		#end

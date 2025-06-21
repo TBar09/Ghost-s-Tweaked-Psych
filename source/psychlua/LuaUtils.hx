@@ -518,8 +518,8 @@ class LuaUtils
 	public static function get_hscriptPreprocessors() {
 		var preprocessors:Map<String, Dynamic> = backend.Macro.compilerDefines;
 		preprocessors.set("GHOST_ENGINE", true);
-		preprocessors.set("GHOST_ENGINE_VER", backend.Global.forkVersion);
-		preprocessors.set("GHOST_ENGINE_STAGE", backend.Global.forkStage);
+		preprocessors.set("GHOST_ENGINE_VER", Global.forkVersion);
+		preprocessors.set("GHOST_ENGINE_STAGE", Global.forkStage);
 		preprocessors.set("BUILD_TARGET", LuaUtils.getBuildTarget());
 
 		return preprocessors;

@@ -20,7 +20,6 @@ import shaders.ColorSwap;
 import states.StoryMenuState;
 import states.WarningState;
 import states.MainMenuState;
-import backend.Global;
 
 typedef TitleData =
 {
@@ -93,13 +92,6 @@ class TitleState extends MusicBeatState
 		ClientPrefs.loadPrefs();
 
 		Highscore.load();
-		
-		if(!initialized) {
-			#if PRETTY_TRACE //its ready to be accessed :money:
-			backend.Log.initz();
-			#end
-			Global.initz();
-		}
 
 		// IGNORE THIS!!!
 		titleJSON = tjson.TJSON.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));

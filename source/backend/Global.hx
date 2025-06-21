@@ -11,7 +11,7 @@ class Global {
     public static var forkLatestVersion(default, null):String;
     public static var forkStage(default, null):String;
 
-    public static function initz() {
+    public static function init() {
         fnfVersion = Application.current.meta.get('version');
         engineVersion = '0.7.3';
         forkVersion = '0.0.1';
@@ -31,12 +31,6 @@ class Global {
             trace('HTTP: $error');
         }
         http.request();
-
-        var toPrint:String = 'Application Meta: {';
-        for (key => field in Application.current.meta) {
-            toPrint += '\n    $key: $field';
-        }
-        trace(toPrint + '\n}');
     }
 
     static function get_modVersion():String {

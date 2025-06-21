@@ -245,10 +245,6 @@ class PlayState extends MusicBeatState
 	// Lua shit
 	public static var instance:PlayState;
 	#if LUA_ALLOWED public var luaArray:Array<FunkinLua> = []; #end
-
-	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
-	#end
 	public var introSoundsSuffix:String = '';
 
 	// Less laggy controls
@@ -393,12 +389,6 @@ class PlayState extends MusicBeatState
 		add(gfGroup);
 		add(dadGroup);
 		add(boyfriendGroup);
-
-		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-		luaDebugGroup = new FlxTypedGroup<psychlua.DebugLuaText>();
-		luaDebugGroup.cameras = [camOther];
-		add(luaDebugGroup);
-		#end
 
 		// "GLOBAL" SCRIPTS
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
@@ -677,24 +667,6 @@ class PlayState extends MusicBeatState
 		#end
 		return playbackRate;
 	}
-
-	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-	public function addTextToDebug(text:String, color:FlxColor) {
-		var newText:psychlua.DebugLuaText = luaDebugGroup.recycle(psychlua.DebugLuaText);
-		newText.text = text;
-		newText.color = color;
-		newText.disableTime = 6;
-		newText.alpha = 1;
-		newText.setPosition(10, 8 - newText.height);
-
-		luaDebugGroup.forEachAlive(function(spr:psychlua.DebugLuaText) {
-			spr.y += newText.height + 2;
-		});
-		luaDebugGroup.add(newText);
-
-		Sys.println(text);
-	}
-	#end
 
 	public function reloadHealthBarColors() {
 		healthBar.setColors(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
@@ -1654,6 +1626,7 @@ class PlayState extends MusicBeatState
 			var ret:Dynamic = callOnScripts('onPause', null, true);
 			if(ret != LuaUtils.Function_Stop) {
 				openPauseMenu();
+				callOnScripts('onPausePost', null, true);
 			}
 		}
 

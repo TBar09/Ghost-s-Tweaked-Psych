@@ -6,8 +6,8 @@ import haxe.macro.Context;
 import haxe.macro.Expr;
 #end
 
+// from Codename Engine, creds to them :D
 class Macro {
-	//From Codename Engine
 	public static var compilerDefines(get, null):Map<String, Dynamic>;
 	private static inline function get_compilerDefines() return __getDefines();
 	private static macro function __getDefines() {

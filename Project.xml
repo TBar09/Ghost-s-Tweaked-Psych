@@ -31,7 +31,7 @@
 	<define name="DISCORD_ALLOWED" />
 	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
 	
-	<!-- <define name="PRETTY_TRACE" /> -->
+	<define name="PRETTY_TRACE" />
 	<define name="CUSTOM_CLASSES" /> <!-- Allows for custom classes using HScript. Increases loading times though-->
 
 	<section if="officialBuild">

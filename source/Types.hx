@@ -1,3 +1,8 @@
+#if PRETTY_TRACE
+import backend.Log.error;
+import backend.Log.warn;
+#end
+
 class KeyValueArray<T> {
     public var map:Map<String, T>;
     public var keys:Array<String>;

@@ -143,7 +143,7 @@ class PauseSubState extends MusicBeatSubstate
 		add(missingText);
 
 		regenMenu();
-		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+		cameras = [PlayState.instance.camOther]; // easier to make something above the pause menu
 
 		super.create();
 	}

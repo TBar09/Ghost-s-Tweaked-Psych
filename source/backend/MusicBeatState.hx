@@ -8,6 +8,10 @@ import backend.PsychCamera;
 import psychlua.HScript;
 import psychlua.FunkinLua;
 #end
+#if PRETTY_TRACE
+import backend.Log.error;
+import backend.Log.warn;
+#end
 
 class MusicBeatState extends FlxUIState
 {
@@ -19,6 +23,12 @@ class MusicBeatState extends FlxUIState
 
 	private var curDecStep:Float = 0;
 	private var curDecBeat:Float = 0;
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	private var debugCam:FlxCamera;
+	private var grpDebugTxt:FlxTypedGroup<psychlua.DebugLuaText>;
+	#end
+
 	public var controls(get, never):Controls;
 	private function get_controls()
 	{
@@ -37,6 +47,18 @@ class MusicBeatState extends FlxUIState
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 
 		if(!_psychCameraInitialized) initPsychCamera();
+
+		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+		debugCam = new FlxCamera();
+		debugCam.bgColor.alpha = 0;
+		FlxG.cameras.add(debugCam, false);
+
+		grpDebugTxt = new FlxTypedGroup<psychlua.DebugLuaText>();
+		grpDebugTxt.cameras = [debugCam];
+		add(grpDebugTxt);
+
+		trace('grpDebugTxt is initialized');
+		#end
 
 		super.create();
 
@@ -219,6 +241,27 @@ class MusicBeatState extends FlxUIState
 		if(PlayState.SONG != null && PlayState.SONG.notes[curSection] != null) val = PlayState.SONG.notes[curSection].sectionBeats;
 		return val == null ? 4 : val;
 	}
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public function addTextToDebug(text:String, color:FlxColor) {
+		if (grpDebugTxt != null) {
+			var newText:psychlua.DebugLuaText = grpDebugTxt.recycle(psychlua.DebugLuaText);
+			newText.text = text;
+			newText.color = color;
+			newText.disableTime = 6;
+			newText.alpha = 1;
+			newText.setPosition(10, 8 - newText.height);
+
+			grpDebugTxt.forEachAlive(function(spr:psychlua.DebugLuaText) {
+				spr.y += newText.height + 2;
+			});
+			grpDebugTxt.add(newText);
+		}
+		error(text);
+	}
+	#else
+	public function addTextToDebug(text:String, color:FlxColor) error(text);
+	#end
 	
 	#if HSCRIPT_ALLOWED
 	public function importScript(path:String, absolute:Bool = false) {

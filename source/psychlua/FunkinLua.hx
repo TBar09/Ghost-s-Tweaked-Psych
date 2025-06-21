@@ -43,7 +43,6 @@ import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;
 
 import haxe.Json;
-import backend.Global;
 
 class FunkinLua {
 	public var lua:State = null;
@@ -137,6 +136,7 @@ class FunkinLua {
 		set('rating', 0);
 		set('ratingName', '');
 		set('ratingFC', '');
+		set('gtVersion', Global.forkVersion.trim());
 		set('version', Global.engineVersion.trim());
 
 		set('inGameOver', false);
@@ -1636,7 +1636,7 @@ class FunkinLua {
 			if(deprecated && !getBool('luaDeprecatedWarnings')) {
 				return;
 			}
-			if(FlxG.state is PlayState) PlayState.instance.addTextToDebug(text, color);
+			if (FlxG.state is MusicBeatState) MusicBeatState.getState().addTextToDebug(text, color);
 			trace(text);
 		}
 	}
