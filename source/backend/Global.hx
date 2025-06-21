@@ -31,12 +31,6 @@ class Global {
             trace('HTTP: $error');
         }
         http.request();
-
-        var toPrint:String = 'Application Meta: {';
-        for (key => field in Application.current.meta) {
-            toPrint += '\n    $key: $field';
-        }
-        trace(toPrint + '\n}');
     }
 
     static function get_modVersion():String {

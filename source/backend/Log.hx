@@ -9,6 +9,7 @@ import sys.io.FileOutput;
 
 using StringTools;
 
+#if PRETTY_TRACE
 class Log
 {
     // Taken from Cobalt's Horizon Engine; THANK YOU COBALT!!
@@ -18,7 +19,7 @@ class Log
 
 	private static var ogTrace:Function;
 	private static var logFileOutput:FileOutput;
-	private static var preformatted:String = '\033[38;5;63m[\033[38;5;39mTIME | \033[38;5;178mFILE\033[38;5;63m] MSG\033[0;0m';
+	private static var preformatted:String = '\033[30;90m[\033[30;33mTIME \033[30;90m| \033[30;32mFILE\033[30;90m] LEVEL \033[0;0mMSG';
 
 	private static var log:Array<String> = [];
 
@@ -69,3 +70,4 @@ class Log
 		return format = val;
 	}
 }
+#end

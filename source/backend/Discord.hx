@@ -5,6 +5,12 @@ import lime.app.Application;
 import hxdiscord_rpc.Discord;
 import hxdiscord_rpc.Types;
 
+#if PRETTY_TRACE
+import backend.Log.error;
+import backend.Log.warn;
+import backend.Log.info;
+#end
+
 class DiscordClient
 {
 	public static var isInitialized:Bool = false;
@@ -88,7 +94,7 @@ class DiscordClient
 		presence.details = details;
 		presence.state = state;
 		presence.largeImageKey = 'icon';
-		presence.largeImageText = "Engine Version: " + engineVersion;
+		presence.largeImageText = "Engine Version: " + backend.Global.engineVersion;
 		presence.smallImageKey = smallImageKey;
 		// Obtained times are in milliseconds so they are divided so Discord can use it
 		presence.startTimestamp = Std.int(startTimestamp / 1000);

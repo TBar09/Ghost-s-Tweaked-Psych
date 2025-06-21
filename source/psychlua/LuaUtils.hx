@@ -512,4 +512,23 @@ class LuaUtils
 		}
 		return PlayState.instance.camGame;
 	}
+	
+	#if HSCRIPT_ALLOWED
+	public static var hscriptPreprocessors(get, never):Map<String, Dynamic>;
+	public static function get_hscriptPreprocessors() {
+		var preprocessors:Map<String, Dynamic> = backend.Macro.compilerDefines;
+		preprocessors.set("GHOST_ENGINE", true);
+		preprocessors.set("GHOST_ENGINE_VER", Global.forkVersion);
+		preprocessors.set("GHOST_ENGINE_STAGE", Global.forkStage);
+		preprocessors.set("BUILD_TARGET", LuaUtils.getBuildTarget());
+
+		return preprocessors;
+	}
+	
+	public static function getHScriptParent():Dynamic {
+		return (FlxG.state.subState == null ? FlxG.state : FlxG.state.subState);
+	}
+
+	@:noUsing public static inline function getMacroAbstractClass(className:String) return Type.resolveClass('${className}_HSC');
+	#end
 }

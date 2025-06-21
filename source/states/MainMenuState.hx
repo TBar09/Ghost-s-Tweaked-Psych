@@ -111,14 +111,14 @@ class MainMenuState extends SelectableMenu {
 		modVer.scrollFactor.set();
 		modVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(modVer);
-		if (Mods.getPack() != null) modVer.text += ' v$modVersion';
+		if (Mods.getPack() != null) modVer.text += ' v${Global.modVersion}';
 
-		var gtpVer:FlxText = new FlxText(12, FlxG.height - 44, 0, 'Ghost\'s Tweaked Psych v$forkVersion', 12);
+		var gtpVer:FlxText = new FlxText(12, FlxG.height - 44, 0, 'Ghost\'s Tweaked Psych v${Global.forkVersion}', 12);
 		gtpVer.scrollFactor.set();
 		gtpVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(gtpVer);
 
-		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, 'Friday Night Funkin\' v$fnfVersion', 12);
+		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, 'Friday Night Funkin\' v${Global.fnfVersion}', 12);
 		fnfVer.scrollFactor.set();
 		fnfVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(fnfVer);

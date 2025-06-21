@@ -32,9 +32,7 @@ import haxe.io.Path;
 
 #if linux
 @:cppInclude('./external/gamemode_client.h')
-@:cppFileCode('
-	#define GAMEMODE_AUTO
-')
+@:cppFileCode('#define GAMEMODE_AUTO')
 #end
 
 class Main extends Sprite
@@ -55,8 +53,6 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
-		backend.Log.init();
-		Global.init();
 		Lib.current.addChild(new Main());
 
 		#if hxWindowColorMode 
@@ -139,6 +135,11 @@ class Main extends Sprite
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
+
+		#if PRETTY_TRACE 
+		backend.Log.init();
+		#end
+		Global.init();
 
 		#if DISCORD_ALLOWED
 		DiscordClient.prepare();

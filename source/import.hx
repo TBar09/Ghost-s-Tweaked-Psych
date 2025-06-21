@@ -36,12 +36,16 @@ import backend.Conductor;
 import backend.BaseStage;
 import backend.Difficulty;
 import backend.Mods;
-import backend.Log;
-import backend.Log.error;
-import backend.Log.warn;
-import backend.Log.info;
 
-import backend.Global.*;
+#if PRETTY_TRACE
+import backend.Log;
+// Log is not ready to be accessed or whatever apparently?
+//import backend.Log.info;
+#else
+import haxe.Log;
+#end
+
+import backend.Global;
 
 import objects.Alphabet;
 import objects.BGSprite;
