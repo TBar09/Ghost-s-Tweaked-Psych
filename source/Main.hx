@@ -65,6 +65,10 @@ class Main extends Sprite
 	{
 		super();
 
+		#if PRETTY_TRACE 
+		backend.Log.init();
+		#end
+
 		// Credits to MAJigsaw77 (he's the og author for this code)
 		#if android
 		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));
@@ -136,9 +140,6 @@ class Main extends Sprite
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
 
-		#if PRETTY_TRACE 
-		backend.Log.init();
-		#end
 		Global.init();
 
 		#if DISCORD_ALLOWED

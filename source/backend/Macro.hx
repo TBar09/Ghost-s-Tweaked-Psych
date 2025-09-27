@@ -20,7 +20,7 @@ class Macro {
 	
 	//Adds any extra classes into the executable, no dce
 	public static final addonClasses:Array<String> = [
-		"backend"
+		
 	];
 
 	@:unreflective public static function compileMacros() {

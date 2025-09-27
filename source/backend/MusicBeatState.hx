@@ -8,10 +8,6 @@ import backend.PsychCamera;
 import psychlua.HScript;
 import psychlua.FunkinLua;
 #end
-#if PRETTY_TRACE
-import backend.Log.error;
-import backend.Log.warn;
-#end
 
 class MusicBeatState extends FlxUIState
 {
